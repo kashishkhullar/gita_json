@@ -29,6 +29,8 @@ word_meaning_hindi = "शब्दार्थ"
 chapters = data["chapters"]
 verses = data["verses"]
 
+# Use "/hi/" at the of the URLs for Hindi
+
 
 def convertNumberToHindi(num):
     hindi = ""
@@ -42,7 +44,7 @@ for chapter_number in range(1, 19):
     print("Getting chapter:", chapter_number)
 
     page = requests.get("https://bhagavadgita.io/chapter/" +
-                        str(chapter_number)+"/hi/")
+                        str(chapter_number))
     soup = BeautifulSoup(page.content, "html.parser")
 
     chapter = Chapter()
@@ -62,7 +64,7 @@ for chapter_number in range(1, 19):
 
     while has_more_pages:
         url = "https://bhagavadgita.io/chapter/" + \
-            str(chapter_number) + "/hi/" + "?page=" + str(page_no)
+            str(chapter_number) + "?page=" + str(page_no)
 
         page = requests.get(url)
 
@@ -86,7 +88,7 @@ for chapter_number in range(1, 19):
 
     for verse_number in chapter.verse_numbers:
         url = "https://bhagavadgita.io/chapter/" + \
-            str(chapter_number) + "/verse/" + str(verse_number) + "/hi/"
+            str(chapter_number) + "/verse/" + str(verse_number)
 
         page = requests.get(url)
 
@@ -100,8 +102,8 @@ for chapter_number in range(1, 19):
             verse.meaning = soup.find("p", {"class": "verse-meaning"}).text
             verse.word_meanings = soup.find(
                 "p", {"class": "verse-word"}).text
-            verse.verse_number = convertNumberToHindi(verse_number)
-
+            # verse.verse_number = convertNumberToHindi(verse_number) # uncomment for hindi
+            verse.verse_number = verse_number                         # comment for hindi
             verses[chapter_number][verse_number] = vars(verse)
 
         else:
@@ -121,5 +123,5 @@ for chapter_number in range(1, 19):
 #     data.append(obj)
 
 # Writing the data to json file
-data_file = open("dataset.json", "w", encoding="utf-8")
+data_file = open("dataset_english.json", "w", encoding="utf-8")
 json.dump(data, data_file, ensure_ascii=False)
