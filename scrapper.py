@@ -48,9 +48,10 @@ for chapter_number in range(1, 19):
     soup = BeautifulSoup(page.content, "html.parser")
 
     chapter = Chapter()
-    chapter.chapter_number = hindi_numbers[chapter_number]
+    # chapter.chapter_number = hindi_numbers[chapter_number] # uncomment for hindi
+    chapter.chapter_number = chapter_number  # comment for hindi
     chapter.chapter_summary = soup.find("p").text
-    chapter.name = soup.find("b").text.split(" ")[-1]
+    chapter.name = strip(soup.find("b").text.split("-")[-1])
     chapter.name_meaning = soup.find("h3").text
     chapter.verse_numbers = []
 
