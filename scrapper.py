@@ -51,7 +51,7 @@ for chapter_number in range(1, 19):
     # chapter.chapter_number = hindi_numbers[chapter_number] # uncomment for hindi
     chapter.chapter_number = chapter_number  # comment for hindi
     chapter.chapter_summary = soup.find("p").text
-    chapter.name = strip(soup.find("b").text.split("-")[-1])
+    chapter.name = soup.find("b").text.split("-")[-1].strip()
     chapter.name_meaning = soup.find("h3").text
     chapter.verse_numbers = []
 
@@ -105,6 +105,8 @@ for chapter_number in range(1, 19):
                 "p", {"class": "verse-word"}).text
             # verse.verse_number = convertNumberToHindi(verse_number) # uncomment for hindi
             verse.verse_number = verse_number                         # comment for hindi
+            verse.transliteration = soup.find(
+                "p", {"class": "verse-transliteration"}).text
             verses[chapter_number][verse_number] = vars(verse)
 
         else:
@@ -116,13 +118,7 @@ for chapter_number in range(1, 19):
     chapters[chapter_number] = vars(chapter)
 
 
-# data = []
-# mydivs = soup.find_all("h2", {"class": "card-header-title chapter-name"})
-# for i in mydivs:
-#     obj = {}
-#     obj["name"] = i.text
-#     data.append(obj)
-
 # Writing the data to json file
+# Change file name for different language
 data_file = open("dataset_english.json", "w", encoding="utf-8")
 json.dump(data, data_file, ensure_ascii=False)
